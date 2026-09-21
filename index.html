@@ -1,3 +1,4 @@
+```html
 <!DOCTYPE html>
 <html lang="es">
 <head>
@@ -9,186 +10,377 @@
 
 <body>
 
-    <div id="desktop">
+<div id="desktop">
 
-        <div class="desktop-icons">
-            <div class="desktop-icon" onclick="openApp('files')">
-                <div class="icon">📁</div>
-                <span>Archivos</span>
-            </div>
+    <!-- ICONOS DEL ESCRITORIO -->
 
-            <div class="desktop-icon" onclick="openApp('browser')">
-                <div class="icon">🌐</div>
-                <span>Navegador</span>
-            </div>
+    <div class="desktop-icons">
 
-            <div class="desktop-icon" onclick="openApp('terminal')">
-                <div class="icon">💻</div>
-                <span>Terminal</span>
-            </div>
-
-            <div class="desktop-icon" onclick="openApp('notes')">
-                <div class="icon">📝</div>
-                <span>Bloc de notas</span>
-            </div>
-
-            <div class="desktop-icon" onclick="openApp('settings')">
-                <div class="icon">⚙️</div>
-                <span>Configuración</span>
-            </div>
+        <div class="desktop-icon" ondblclick="openApp('files')">
+            <div class="icon">📁</div>
+            <span>Archivos</span>
         </div>
 
-        <!-- ARCHIVOS -->
-        <div class="window" id="files">
-            <div class="window-header">
-                <span>📁 Archivos</span>
-                <button onclick="closeApp('files')">✕</button>
-            </div>
-
-            <div class="window-content">
-                <h2>Mis archivos</h2>
-
-                <div class="file">
-                    📁 Documentos
-                </div>
-
-                <div class="file">
-                    📁 Descargas
-                </div>
-
-                <div class="file">
-                    📁 Imágenes
-                </div>
-            </div>
+        <div class="desktop-icon" ondblclick="openApp('browser')">
+            <div class="icon">🌐</div>
+            <span>Navegador</span>
         </div>
 
-        <!-- NAVEGADOR -->
-        <div class="window" id="browser">
-            <div class="window-header">
-                <span>🌐 Navegador</span>
-                <button onclick="closeApp('browser')">✕</button>
-            </div>
-
-            <div class="window-content">
-                <input
-                    type="text"
-                    id="url"
-                    placeholder="Escribe una dirección..."
-                >
-
-                <button onclick="goToSite()">Ir</button>
-
-                <div id="browser-result">
-                    Bienvenido al navegador de LAKY PC NUBE.
-                </div>
-            </div>
+        <div class="desktop-icon" ondblclick="openApp('terminal')">
+            <div class="icon">💻</div>
+            <span>Terminal</span>
         </div>
 
-        <!-- TERMINAL -->
-        <div class="window" id="terminal">
-            <div class="window-header">
-                <span>💻 Terminal</span>
-                <button onclick="closeApp('terminal')">✕</button>
-            </div>
-
-            <div class="terminal-content">
-                <div id="terminal-output">
-                    LAKY PC NUBE Terminal<br>
-                    Escribe <b>help</b> para ver los comandos.
-                </div>
-
-                <div class="terminal-input">
-                    <span>user@laky:~$</span>
-                    <input
-                        id="terminal-command"
-                        type="text"
-                        autocomplete="off"
-                        onkeydown="terminalCommand(event)"
-                    >
-                </div>
-            </div>
+        <div class="desktop-icon" ondblclick="openApp('notes')">
+            <div class="icon">📝</div>
+            <span>Bloc de notas</span>
         </div>
 
-        <!-- BLOC DE NOTAS -->
-        <div class="window" id="notes">
-            <div class="window-header">
-                <span>📝 Bloc de notas</span>
-                <button onclick="closeApp('notes')">✕</button>
-            </div>
-
-            <div class="window-content">
-                <textarea
-                    id="notes-area"
-                    placeholder="Escribe aquí..."
-                ></textarea>
-            </div>
+        <div class="desktop-icon" ondblclick="openApp('settings')">
+            <div class="icon">⚙️</div>
+            <span>Configuración</span>
         </div>
 
-        <!-- CONFIGURACIÓN -->
-        <div class="window" id="settings">
-            <div class="window-header">
-                <span>⚙️ Configuración</span>
-                <button onclick="closeApp('settings')">✕</button>
-            </div>
+    </div>
 
-            <div class="window-content">
-                <h2>Configuración</h2>
 
-                <p>🌐 Idioma: Español</p>
-                <p>☁️ Estado: PC Nube activo</p>
-                <p>👤 Usuario: LAKY</p>
-                <p>💻 Sistema: LAKY Cloud OS</p>
-            </div>
-        </div>
+    <!-- ========================= -->
+    <!-- ARCHIVOS -->
+    <!-- ========================= -->
 
-        <!-- BARRA DE TAREAS -->
-        <div class="taskbar">
+    <div class="window" id="files">
 
-            <button class="start-button" onclick="toggleStart()">
-                ☁️
-            </button>
+        <div class="window-header">
 
-            <div class="taskbar-title">
-                LAKY PC NUBE
-            </div>
+            <span>📁 Archivos</span>
 
-            <div class="system-info">
-                <span>🟢 Online</span>
-                <span id="clock">00:00</span>
+            <div class="window-controls">
+
+                <button onclick="minimizeApp('files')">−</button>
+
+                <button onclick="maximizeApp('files')">□</button>
+
+                <button class="close-btn" onclick="closeApp('files')">✕</button>
+
             </div>
 
         </div>
 
-        <!-- MENÚ INICIO -->
-        <div class="start-menu" id="start-menu">
+        <div class="window-content">
 
-            <h2>☁️ LAKY PC NUBE</h2>
+            <h2>Mis archivos</h2>
 
-            <button onclick="openApp('files')">
-                📁 Archivos
-            </button>
+            <div class="file">
+                📁 Documentos
+            </div>
 
-            <button onclick="openApp('browser')">
-                🌐 Navegador
-            </button>
+            <div class="file">
+                📁 Descargas
+            </div>
 
-            <button onclick="openApp('terminal')">
-                💻 Terminal
-            </button>
+            <div class="file">
+                📁 Imágenes
+            </div>
 
-            <button onclick="openApp('notes')">
-                📝 Bloc de notas
-            </button>
+            <div class="file">
+                📁 Música
+            </div>
 
-            <button onclick="openApp('settings')">
-                ⚙️ Configuración
-            </button>
+            <div class="file">
+                📁 Videos
+            </div>
 
         </div>
 
     </div>
 
-    <script src="script.js"></script>
+
+    <!-- ========================= -->
+    <!-- NAVEGADOR -->
+    <!-- ========================= -->
+
+    <div class="window" id="browser">
+
+        <div class="window-header">
+
+            <span>🌐 Navegador</span>
+
+            <div class="window-controls">
+
+                <button onclick="minimizeApp('browser')">−</button>
+
+                <button onclick="maximizeApp('browser')">□</button>
+
+                <button class="close-btn" onclick="closeApp('browser')">✕</button>
+
+            </div>
+
+        </div>
+
+        <div class="window-content">
+
+            <div class="browser-bar">
+
+                <input
+                    type="text"
+                    id="url"
+                    placeholder="Escribe una dirección..."
+                    onkeydown="if(event.key === 'Enter') goToSite()"
+                >
+
+                <button onclick="goToSite()">
+                    Ir
+                </button>
+
+            </div>
+
+            <div id="browser-result">
+
+                <h2>🌐 LAKY Browser</h2>
+
+                <p>
+                    Escribe una dirección para abrirla.
+                </p>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <!-- ========================= -->
+    <!-- TERMINAL -->
+    <!-- ========================= -->
+
+    <div class="window" id="terminal">
+
+        <div class="window-header">
+
+            <span>💻 Terminal</span>
+
+            <div class="window-controls">
+
+                <button onclick="minimizeApp('terminal')">−</button>
+
+                <button onclick="maximizeApp('terminal')">□</button>
+
+                <button class="close-btn" onclick="closeApp('terminal')">✕</button>
+
+            </div>
+
+        </div>
+
+        <div class="terminal-content">
+
+            <div id="terminal-output">
+
+                ☁️ LAKY Cloud OS Terminal
+                <br>
+                Escribe <b>help</b> para ver los comandos.
+
+            </div>
+
+            <div class="terminal-input">
+
+                <span>user@laky:~$</span>
+
+                <input
+                    id="terminal-command"
+                    type="text"
+                    autocomplete="off"
+                    spellcheck="false"
+                    onkeydown="terminalCommand(event)"
+                >
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <!-- ========================= -->
+    <!-- BLOC DE NOTAS -->
+    <!-- ========================= -->
+
+    <div class="window" id="notes">
+
+        <div class="window-header">
+
+            <span>📝 Bloc de notas</span>
+
+            <div class="window-controls">
+
+                <button onclick="minimizeApp('notes')">−</button>
+
+                <button onclick="maximizeApp('notes')">□</button>
+
+                <button class="close-btn" onclick="closeApp('notes')">✕</button>
+
+            </div>
+
+        </div>
+
+        <div class="window-content notes-window">
+
+            <textarea
+                id="notes-area"
+                placeholder="Escribe aquí..."
+            ></textarea>
+
+        </div>
+
+    </div>
+
+
+    <!-- ========================= -->
+    <!-- CONFIGURACIÓN -->
+    <!-- ========================= -->
+
+    <div class="window" id="settings">
+
+        <div class="window-header">
+
+            <span>⚙️ Configuración</span>
+
+            <div class="window-controls">
+
+                <button onclick="minimizeApp('settings')">−</button>
+
+                <button onclick="maximizeApp('settings')">□</button>
+
+                <button class="close-btn" onclick="closeApp('settings')">✕</button>
+
+            </div>
+
+        </div>
+
+        <div class="window-content">
+
+            <h2>Configuración</h2>
+
+            <div class="setting-card">
+                🌐 Idioma
+                <span>Español</span>
+            </div>
+
+            <div class="setting-card">
+                ☁️ Estado
+                <span>PC Nube activo</span>
+            </div>
+
+            <div class="setting-card">
+                👤 Usuario
+                <span>LAKY</span>
+            </div>
+
+            <div class="setting-card">
+                💻 Sistema
+                <span>LAKY Cloud OS</span>
+            </div>
+
+            <div class="setting-card">
+                🔐 Seguridad
+                <span>Activa</span>
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <!-- ========================= -->
+    <!-- MENÚ INICIO -->
+    <!-- ========================= -->
+
+    <div class="start-menu" id="start-menu">
+
+        <div class="start-title">
+            <div class="cloud-logo">☁️</div>
+
+            <div>
+                <strong>LAKY PC NUBE</strong>
+                <small>Cloud OS</small>
+            </div>
+        </div>
+
+
+        <button onclick="openApp('files')">
+            📁
+            <span>Archivos</span>
+        </button>
+
+        <button onclick="openApp('browser')">
+            🌐
+            <span>Navegador</span>
+        </button>
+
+        <button onclick="openApp('terminal')">
+            💻
+            <span>Terminal</span>
+        </button>
+
+        <button onclick="openApp('notes')">
+            📝
+            <span>Bloc de notas</span>
+        </button>
+
+        <button onclick="openApp('settings')">
+            ⚙️
+            <span>Configuración</span>
+        </button>
+
+
+        <div class="start-footer">
+            LAKY Cloud OS v1.0.0
+        </div>
+
+    </div>
+
+
+    <!-- ========================= -->
+    <!-- BARRA DE TAREAS -->
+    <!-- ========================= -->
+
+    <div class="taskbar">
+
+        <button
+            class="start-button"
+            onclick="toggleStart()"
+            title="Inicio"
+        >
+            ☁️
+        </button>
+
+
+        <div class="taskbar-apps" id="taskbar-apps"></div>
+
+
+        <div class="taskbar-title">
+            LAKY PC NUBE
+        </div>
+
+
+        <div class="system-info">
+
+            <span id="status">
+                🟢 Online
+            </span>
+
+            <span id="clock">
+                00:00
+            </span>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+<script src="script.js"></script>
 
 </body>
 </html>
+```
