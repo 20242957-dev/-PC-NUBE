@@ -1,10 +1,28 @@
 ```javascript
 // ==========================================
 // ☁️ LAKY PC NUBE
-// Sistema principal
 // ==========================================
 
 let highestZIndex = 100;
+
+
+// ==========================================
+// NOMBRES DE APLICACIONES
+// ==========================================
+
+const appNames = {
+
+    files: "📁 Archivos",
+
+    browser: "🌐 Navegador",
+
+    terminal: "💻 Terminal",
+
+    notes: "📝 Notas",
+
+    settings: "⚙️ Configuración"
+
+};
 
 
 // ==========================================
@@ -12,30 +30,69 @@ let highestZIndex = 100;
 // ==========================================
 
 function openApp(app) {
-    const windowElement = document.getElementById(app);
+
+    const windowElement =
+        document.getElementById(app);
 
     if (!windowElement) return;
 
-    windowElement.style.display = "block";
-    windowElement.style.zIndex = ++highestZIndex;
 
-    // Si estaba minimizada, restaurarla
+    windowElement.style.display = "block";
+
     windowElement.classList.remove("minimized");
 
-    document.getElementById("start-menu").style.display = "none";
+    windowElement.style.zIndex =
+        ++highestZIndex;
+
+
+    document
+        .getElementById("start-menu")
+        .style.display = "none";
+
+
+    updateTaskbar();
+
+
+    // Enfocar terminal automáticamente
+
+    if (app === "terminal") {
+
+        setTimeout(() => {
+
+            const input =
+                document.getElementById(
+                    "terminal-command"
+                );
+
+            if (input) input.focus();
+
+        }, 100);
+
+    }
+
 }
 
 
 // ==========================================
-// CERRAR APLICACIÓN
+// CERRAR
 // ==========================================
 
 function closeApp(app) {
-    const windowElement = document.getElementById(app);
+
+    const windowElement =
+        document.getElementById(app);
 
     if (!windowElement) return;
 
+
     windowElement.style.display = "none";
+
+    windowElement.classList.remove("minimized");
+
+    windowElement.classList.remove("maximized");
+
+    updateTaskbar();
+
 }
 
 
@@ -44,44 +101,61 @@ function closeApp(app) {
 // ==========================================
 
 function minimizeApp(app) {
-    const windowElement = document.getElementById(app);
+
+    const windowElement =
+        document.getElementById(app);
 
     if (!windowElement) return;
 
+
     windowElement.classList.add("minimized");
+
+    updateTaskbar();
+
 }
 
 
 // ==========================================
-// MAXIMIZAR / RESTAURAR
+// MAXIMIZAR
 // ==========================================
 
 function maximizeApp(app) {
 
-    const windowElement = document.getElementById(app);
+    const windowElement =
+        document.getElementById(app);
 
     if (!windowElement) return;
+
 
     windowElement.classList.toggle("maximized");
 
     windowElement.classList.remove("minimized");
 
-    windowElement.style.zIndex = ++highestZIndex;
+    windowElement.style.zIndex =
+        ++highestZIndex;
+
 }
 
 
 // ==========================================
-// TRAER VENTANA AL FRENTE
+// TRAER AL FRENTE
 // ==========================================
 
-document.addEventListener("mousedown", (event) => {
+document.addEventListener(
+    "mousedown",
+    event => {
 
-    const windowElement = event.target.closest(".window");
+        const windowElement =
+            event.target.closest(".window");
 
-    if (!windowElement) return;
+        if (!windowElement) return;
 
-    windowElement.style.zIndex = ++highestZIndex;
-});
+
+        windowElement.style.zIndex =
+            ++highestZIndex;
+
+    }
+);
 
 
 // ==========================================
@@ -90,9 +164,13 @@ document.addEventListener("mousedown", (event) => {
 
 function toggleStart() {
 
-    const menu = document.getElementById("start-menu");
+    const menu =
+        document.getElementById(
+            "start-menu"
+        );
 
     if (!menu) return;
+
 
     if (menu.style.display === "block") {
 
@@ -101,7 +179,9 @@ function toggleStart() {
     } else {
 
         menu.style.display = "block";
+
     }
+
 }
 
 
@@ -111,17 +191,30 @@ function toggleStart() {
 
 function updateClock() {
 
-    const clock = document.getElementById("clock");
+    const clock =
+        document.getElementById("clock");
 
     if (!clock) return;
 
+
     const now = new Date();
 
-    const hours = String(now.getHours()).padStart(2, "0");
-    const minutes = String(now.getMinutes()).padStart(2, "0");
 
-    clock.textContent = `${hours}:${minutes}`;
+    const hours =
+        String(now.getHours())
+            .padStart(2, "0");
+
+
+    const minutes =
+        String(now.getMinutes())
+            .padStart(2, "0");
+
+
+    clock.textContent =
+        `${hours}:${minutes}`;
+
 }
+
 
 updateClock();
 
@@ -134,40 +227,75 @@ setInterval(updateClock, 1000);
 
 function goToSite() {
 
-    const input = document.getElementById("url");
-    const result = document.getElementById("browser-result");
+    const input =
+        document.getElementById("url");
+
+    const result =
+        document.getElementById(
+            "browser-result"
+        );
+
 
     if (!input || !result) return;
 
-    let url = input.value.trim();
+
+    let url =
+        input.value.trim();
+
 
     if (!url) {
 
         result.innerHTML = `
-            <p>⚠️ Escribe una dirección primero.</p>
+            <h2>⚠️ Dirección vacía</h2>
+            <p>Escribe una dirección primero.</p>
         `;
 
         return;
+
     }
+
 
     if (
         !url.startsWith("http://") &&
         !url.startsWith("https://")
     ) {
+
         url = "https://" + url;
+
     }
 
+
+    const safeURL =
+        escapeHTML(url);
+
+
     result.innerHTML = `
-        <p>🌐 Dirección:</p>
 
-        <strong>${escapeHTML(url)}</strong>
+        <h2>🌐 Sitio listo</h2>
 
-        <br><br>
+        <p>${safeURL}</p>
 
-        <button onclick="window.open('${escapeAttribute(url)}', '_blank')">
+        <br>
+
+        <button
+            onclick="openExternalSite('${escapeAttribute(url)}')"
+        >
             Abrir sitio
         </button>
+
     `;
+
+}
+
+
+function openExternalSite(url) {
+
+    window.open(
+        url,
+        "_blank",
+        "noopener,noreferrer"
+    );
+
 }
 
 
@@ -179,53 +307,79 @@ function terminalCommand(event) {
 
     if (event.key !== "Enter") return;
 
-    const input = document.getElementById("terminal-command");
-    const output = document.getElementById("terminal-output");
+
+    const input =
+        document.getElementById(
+            "terminal-command"
+        );
+
+    const output =
+        document.getElementById(
+            "terminal-output"
+        );
+
 
     if (!input || !output) return;
 
-    const command = input.value.trim();
+
+    const command =
+        input.value.trim();
+
 
     if (!command) return;
 
-    const commandLower = command.toLowerCase();
+
+    const lower =
+        command.toLowerCase();
+
 
     output.innerHTML += `
+
         <br><br>
-        <span>user@laky:~$ ${escapeHTML(command)}</span>
+
+        <span>
+            user@laky:~$
+            ${escapeHTML(command)}
+        </span>
+
     `;
+
 
     let response = "";
 
 
-    // -------------------------------
-    // HELP
-    // -------------------------------
-
-    if (commandLower === "help") {
+    if (lower === "help") {
 
         response = `
-            Comandos disponibles:<br>
-            ─────────────────────────<br>
-            help → muestra los comandos<br>
-            clear → limpia la terminal<br>
-            about → información del sistema<br>
-            date → muestra la fecha<br>
-            time → muestra la hora<br>
-            status → estado del PC Nube<br>
-            whoami → usuario actual<br>
-            version → versión del sistema<br>
-            echo [texto] → muestra texto
+
+            Comandos disponibles:
+            <br>
+            ───────────────────────
+            <br>
+            help → comandos
+            <br>
+            clear → limpiar terminal
+            <br>
+            about → información
+            <br>
+            date → fecha
+            <br>
+            time → hora
+            <br>
+            status → estado
+            <br>
+            whoami → usuario
+            <br>
+            version → versión
+            <br>
+            echo [texto] → mostrar texto
+
         `;
 
     }
 
 
-    // -------------------------------
-    // CLEAR
-    // -------------------------------
-
-    else if (commandLower === "clear") {
+    else if (lower === "clear") {
 
         output.innerHTML = "";
 
@@ -236,121 +390,129 @@ function terminalCommand(event) {
     }
 
 
-    // -------------------------------
-    // ABOUT
-    // -------------------------------
-
-    else if (commandLower === "about") {
+    else if (lower === "about") {
 
         response = `
-            ☁️ LAKY PC NUBE<br>
-            Sistema: LAKY Cloud OS<br>
-            Versión: 1.0.0<br>
+
+            ☁️ LAKY PC NUBE
+            <br>
+            Sistema: LAKY Cloud OS
+            <br>
+            Versión: 1.0.0
+            <br>
             Estado: Online
+
         `;
 
     }
 
 
-    // -------------------------------
-    // DATE
-    // -------------------------------
+    else if (lower === "date") {
 
-    else if (commandLower === "date") {
-
-        response = new Date().toLocaleDateString("es-ES");
-
-    }
-
-
-    // -------------------------------
-    // TIME
-    // -------------------------------
-
-    else if (commandLower === "time") {
-
-        response = new Date().toLocaleTimeString("es-ES");
+        response =
+            new Date()
+                .toLocaleDateString(
+                    "es-ES"
+                );
 
     }
 
 
-    // -------------------------------
-    // STATUS
-    // -------------------------------
+    else if (lower === "time") {
 
-    else if (commandLower === "status") {
+        response =
+            new Date()
+                .toLocaleTimeString(
+                    "es-ES"
+                );
+
+    }
+
+
+    else if (lower === "status") {
 
         response = `
-            🟢 Sistema: Online<br>
-            💻 CPU: Simulada<br>
-            🧠 RAM: Simulada<br>
-            ☁️ Cloud: Conectado<br>
+
+            🟢 Sistema: Online
+            <br>
+            💻 CPU: Simulada
+            <br>
+            🧠 RAM: Simulada
+            <br>
+            ☁️ Cloud: Conectado
+            <br>
             🔐 Seguridad: Activa
+
         `;
 
     }
 
 
-    // -------------------------------
-    // WHOAMI
-    // -------------------------------
-
-    else if (commandLower === "whoami") {
+    else if (lower === "whoami") {
 
         response = "LAKY";
 
     }
 
 
-    // -------------------------------
-    // VERSION
-    // -------------------------------
+    else if (lower === "version") {
 
-    else if (commandLower === "version") {
-
-        response = "LAKY Cloud OS v1.0.0";
+        response =
+            "LAKY Cloud OS v1.0.0";
 
     }
 
 
-    // -------------------------------
-    // ECHO
-    // -------------------------------
+    else if (
+        lower.startsWith("echo ")
+    ) {
 
-    else if (commandLower.startsWith("echo ")) {
-
-        response = escapeHTML(
-            command.substring(5)
-        );
+        response =
+            escapeHTML(
+                command.substring(5)
+            );
 
     }
 
-
-    // -------------------------------
-    // COMANDO DESCONOCIDO
-    // -------------------------------
 
     else {
 
         response = `
-            ❌ Comando no encontrado: ${escapeHTML(command)}<br>
-            Escribe <b>help</b> para ver los comandos.
+
+            ❌ Comando no encontrado:
+            ${escapeHTML(command)}
+
+            <br>
+
+            Escribe
+            <b>help</b>
+            para ver los comandos.
+
         `;
 
     }
 
 
-    output.innerHTML += `<br>${response}`;
+    output.innerHTML +=
+        `<br>${response}`;
+
 
     input.value = "";
 
-    const terminal = document.querySelector(".terminal-content");
+
+    const terminal =
+        document.querySelector(
+            ".terminal-content"
+        );
+
 
     if (terminal) {
 
-        terminal.scrollTop = terminal.scrollHeight;
+        terminal.scrollTop =
+            terminal.scrollHeight;
 
     }
+
 }
 
 
@@ -358,133 +520,334 @@ function terminalCommand(event) {
 // BLOC DE NOTAS
 // ==========================================
 
-const notes = document.getElementById("notes-area");
+const notes =
+    document.getElementById(
+        "notes-area"
+    );
+
 
 if (notes) {
 
-    const savedNotes = localStorage.getItem("laky_notes");
+    const savedNotes =
+        localStorage.getItem(
+            "laky_notes"
+        );
+
 
     if (savedNotes !== null) {
 
-        notes.value = savedNotes;
+        notes.value =
+            savedNotes;
 
     }
 
 
-    notes.addEventListener("input", () => {
+    notes.addEventListener(
+        "input",
+        () => {
 
-        localStorage.setItem(
-            "laky_notes",
-            notes.value
-        );
+            localStorage.setItem(
+                "laky_notes",
+                notes.value
+            );
 
-    });
+        }
+    );
 
 }
 
 
 // ==========================================
-// TECLA ESC
+// ARRASTRAR VENTANAS
 // ==========================================
 
-document.addEventListener("keydown", (event) => {
+document
+    .querySelectorAll(".window")
+    .forEach(windowElement => {
 
-    if (event.key === "Escape") {
 
-        const menu = document.getElementById("start-menu");
+        const header =
+            windowElement.querySelector(
+                ".window-header"
+            );
+
+
+        if (!header) return;
+
+
+        let dragging = false;
+
+        let offsetX = 0;
+
+        let offsetY = 0;
+
+
+        header.addEventListener(
+            "mousedown",
+            event => {
+
+
+                if (
+                    event.target.closest(
+                        ".window-controls"
+                    )
+                ) {
+                    return;
+                }
+
+
+                if (
+                    windowElement.classList
+                        .contains("maximized")
+                ) {
+                    return;
+                }
+
+
+                dragging = true;
+
+
+                const rect =
+                    windowElement
+                        .getBoundingClientRect();
+
+
+                offsetX =
+                    event.clientX -
+                    rect.left;
+
+
+                offsetY =
+                    event.clientY -
+                    rect.top;
+
+
+                windowElement.style.zIndex =
+                    ++highestZIndex;
+
+
+                windowElement.style.transform =
+                    "none";
+
+
+                event.preventDefault();
+
+            }
+        );
+
+
+        document.addEventListener(
+            "mousemove",
+            event => {
+
+
+                if (!dragging) return;
+
+
+                let x =
+                    event.clientX -
+                    offsetX;
+
+
+                let y =
+                    event.clientY -
+                    offsetY;
+
+
+                const maxX =
+                    window.innerWidth -
+                    windowElement.offsetWidth;
+
+
+                const maxY =
+                    window.innerHeight -
+                    windowElement.offsetHeight -
+                    55;
+
+
+                x =
+                    Math.max(
+                        0,
+                        Math.min(x, maxX)
+                    );
+
+
+                y =
+                    Math.max(
+                        0,
+                        Math.min(y, maxY)
+                    );
+
+
+                windowElement.style.left =
+                    `${x}px`;
+
+
+                windowElement.style.top =
+                    `${y}px`;
+
+            }
+        );
+
+
+        document.addEventListener(
+            "mouseup",
+            () => {
+
+                dragging = false;
+
+            }
+        );
+
+
+    });
+
+
+// ==========================================
+// ESC
+// ==========================================
+
+document.addEventListener(
+    "keydown",
+    event => {
+
+        if (event.key !== "Escape")
+            return;
+
+
+        const menu =
+            document.getElementById(
+                "start-menu"
+            );
+
 
         if (menu) {
 
-            menu.style.display = "none";
+            menu.style.display =
+                "none";
 
         }
 
     }
-
-});
+);
 
 
 // ==========================================
-// HACER VENTANAS ARRASTRABLES
+// TASKBAR
 // ==========================================
 
-document.querySelectorAll(".window").forEach(windowElement => {
+function updateTaskbar() {
 
-    const header = windowElement.querySelector(".window-header");
-
-    if (!header) return;
-
-    let dragging = false;
-
-    let offsetX = 0;
-    let offsetY = 0;
+    const taskbar =
+        document.getElementById(
+            "taskbar-apps"
+        );
 
 
-    header.addEventListener("mousedown", (event) => {
+    if (!taskbar) return;
 
-        // No arrastrar al pulsar botones
-        if (event.target.tagName === "BUTTON") return;
 
-        if (windowElement.classList.contains("maximized")) {
-            return;
+    taskbar.innerHTML = "";
+
+
+    Object.keys(appNames).forEach(
+        app => {
+
+            const windowElement =
+                document.getElementById(
+                    app
+                );
+
+
+            if (!windowElement)
+                return;
+
+
+            const visible =
+                windowElement.style.display ===
+                "block";
+
+
+            if (!visible)
+                return;
+
+
+            const button =
+                document.createElement(
+                    "button"
+                );
+
+
+            button.className =
+                "taskbar-app";
+
+
+            button.textContent =
+                appNames[app];
+
+
+            button.onclick = () => {
+
+                if (
+                    windowElement.classList
+                        .contains("minimized")
+                ) {
+
+                    openApp(app);
+
+                } else {
+
+                    windowElement.style.zIndex =
+                        ++highestZIndex;
+
+                }
+
+            };
+
+
+            taskbar.appendChild(button);
+
         }
+    );
 
-        dragging = true;
-
-        const rect = windowElement.getBoundingClientRect();
-
-        offsetX = event.clientX - rect.left;
-        offsetY = event.clientY - rect.top;
-
-        windowElement.style.zIndex = ++highestZIndex;
-
-        event.preventDefault();
-
-    });
-
-
-    document.addEventListener("mousemove", (event) => {
-
-        if (!dragging) return;
-
-        let x = event.clientX - offsetX;
-        let y = event.clientY - offsetY;
-
-
-        // No permitir salir demasiado de la pantalla
-
-        const maxX =
-            window.innerWidth -
-            windowElement.offsetWidth;
-
-        const maxY =
-            window.innerHeight -
-            windowElement.offsetHeight -
-            55;
-
-
-        x = Math.max(0, Math.min(x, maxX));
-
-        y = Math.max(0, Math.min(y, maxY));
-
-
-        windowElement.style.left = `${x}px`;
-        windowElement.style.top = `${y}px`;
-
-        windowElement.style.transform = "none";
-
-    });
-
-
-    document.addEventListener("mouseup", () => {
-
-        dragging = false;
-
-    });
-
-});
+}
 
 
 // ==========================================
-// SOP
+// SEGURIDAD
+// ==========================================
+
+function escapeHTML(text) {
+
+    const div =
+        document.createElement("div");
+
+    div.textContent = text;
+
+    return div.innerHTML;
+
+}
+
+
+function escapeAttribute(text) {
+
+    return text
+
+        .replace(/\\/g, "\\\\")
+
+        .replace(/'/g, "\\'")
+
+        .replace(/"/g, "&quot;");
+
+}
+
+
+// ==========================================
+// INICIO
+// ==========================================
+
+console.log(
+    "☁️ LAKY PC NUBE iniciado correctamente."
+);
+
 ```
