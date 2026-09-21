@@ -1,1 +1,194 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LAKY PC NUBE</title>
+    <link rel="stylesheet" href="style.css">
+</head>
 
+<body>
+
+    <div id="desktop">
+
+        <div class="desktop-icons">
+            <div class="desktop-icon" onclick="openApp('files')">
+                <div class="icon">📁</div>
+                <span>Archivos</span>
+            </div>
+
+            <div class="desktop-icon" onclick="openApp('browser')">
+                <div class="icon">🌐</div>
+                <span>Navegador</span>
+            </div>
+
+            <div class="desktop-icon" onclick="openApp('terminal')">
+                <div class="icon">💻</div>
+                <span>Terminal</span>
+            </div>
+
+            <div class="desktop-icon" onclick="openApp('notes')">
+                <div class="icon">📝</div>
+                <span>Bloc de notas</span>
+            </div>
+
+            <div class="desktop-icon" onclick="openApp('settings')">
+                <div class="icon">⚙️</div>
+                <span>Configuración</span>
+            </div>
+        </div>
+
+        <!-- ARCHIVOS -->
+        <div class="window" id="files">
+            <div class="window-header">
+                <span>📁 Archivos</span>
+                <button onclick="closeApp('files')">✕</button>
+            </div>
+
+            <div class="window-content">
+                <h2>Mis archivos</h2>
+
+                <div class="file">
+                    📁 Documentos
+                </div>
+
+                <div class="file">
+                    📁 Descargas
+                </div>
+
+                <div class="file">
+                    📁 Imágenes
+                </div>
+            </div>
+        </div>
+
+        <!-- NAVEGADOR -->
+        <div class="window" id="browser">
+            <div class="window-header">
+                <span>🌐 Navegador</span>
+                <button onclick="closeApp('browser')">✕</button>
+            </div>
+
+            <div class="window-content">
+                <input
+                    type="text"
+                    id="url"
+                    placeholder="Escribe una dirección..."
+                >
+
+                <button onclick="goToSite()">Ir</button>
+
+                <div id="browser-result">
+                    Bienvenido al navegador de LAKY PC NUBE.
+                </div>
+            </div>
+        </div>
+
+        <!-- TERMINAL -->
+        <div class="window" id="terminal">
+            <div class="window-header">
+                <span>💻 Terminal</span>
+                <button onclick="closeApp('terminal')">✕</button>
+            </div>
+
+            <div class="terminal-content">
+                <div id="terminal-output">
+                    LAKY PC NUBE Terminal<br>
+                    Escribe <b>help</b> para ver los comandos.
+                </div>
+
+                <div class="terminal-input">
+                    <span>user@laky:~$</span>
+                    <input
+                        id="terminal-command"
+                        type="text"
+                        autocomplete="off"
+                        onkeydown="terminalCommand(event)"
+                    >
+                </div>
+            </div>
+        </div>
+
+        <!-- BLOC DE NOTAS -->
+        <div class="window" id="notes">
+            <div class="window-header">
+                <span>📝 Bloc de notas</span>
+                <button onclick="closeApp('notes')">✕</button>
+            </div>
+
+            <div class="window-content">
+                <textarea
+                    id="notes-area"
+                    placeholder="Escribe aquí..."
+                ></textarea>
+            </div>
+        </div>
+
+        <!-- CONFIGURACIÓN -->
+        <div class="window" id="settings">
+            <div class="window-header">
+                <span>⚙️ Configuración</span>
+                <button onclick="closeApp('settings')">✕</button>
+            </div>
+
+            <div class="window-content">
+                <h2>Configuración</h2>
+
+                <p>🌐 Idioma: Español</p>
+                <p>☁️ Estado: PC Nube activo</p>
+                <p>👤 Usuario: LAKY</p>
+                <p>💻 Sistema: LAKY Cloud OS</p>
+            </div>
+        </div>
+
+        <!-- BARRA DE TAREAS -->
+        <div class="taskbar">
+
+            <button class="start-button" onclick="toggleStart()">
+                ☁️
+            </button>
+
+            <div class="taskbar-title">
+                LAKY PC NUBE
+            </div>
+
+            <div class="system-info">
+                <span>🟢 Online</span>
+                <span id="clock">00:00</span>
+            </div>
+
+        </div>
+
+        <!-- MENÚ INICIO -->
+        <div class="start-menu" id="start-menu">
+
+            <h2>☁️ LAKY PC NUBE</h2>
+
+            <button onclick="openApp('files')">
+                📁 Archivos
+            </button>
+
+            <button onclick="openApp('browser')">
+                🌐 Navegador
+            </button>
+
+            <button onclick="openApp('terminal')">
+                💻 Terminal
+            </button>
+
+            <button onclick="openApp('notes')">
+                📝 Bloc de notas
+            </button>
+
+            <button onclick="openApp('settings')">
+                ⚙️ Configuración
+            </button>
+
+        </div>
+
+    </div>
+
+    <script src="script.js"></script>
+
+</body>
+</html>
